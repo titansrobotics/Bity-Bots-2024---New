@@ -79,8 +79,8 @@ namespace AutoConstants {
     constexpr double kSimpleAutoSpeed               {0.3};
     constexpr units::time::second_t kSimpleAutoTime {3.0_s};
 
-    constexpr double kShootAutoTopSpeed {1};
-    constexpr double kShootAutoBottomSpeed {1};
+    constexpr double kShootAutoTopSpeed {0.1};
+    constexpr double kShootAutoBottomSpeed {0.1};
     constexpr units::time::second_t kShootAutoTime {1.2_s};
 
     constexpr double kComplexAutoSpeed {-0.3};

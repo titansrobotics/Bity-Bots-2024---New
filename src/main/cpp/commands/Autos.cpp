@@ -15,7 +15,8 @@ frc2::CommandPtr autos::SimpleAuto(DriveSubsystem* drive){
              autoTimer.Start(); },
         [drive] { drive->ArcadeDrive(AutoConstants::kSimpleAutoSpeed, 0); },
         [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kSimpleAutoTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kSimpleAutoTime); },
+        {drive})
         .ToPtr();
 }
 
@@ -25,7 +26,8 @@ frc2::CommandPtr autos::ShootAuto(LauncherSubsystem* launcher){
              autoTimer.Start(); },
         [launcher] { launcher->AutoLaunch(AutoConstants::kShootAutoTopSpeed, AutoConstants::kShootAutoBottomSpeed); },
         [launcher](bool interrupted) {launcher->AutoLaunch(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); },
+        {launcher})
         .ToPtr();
 }
 
@@ -36,7 +38,8 @@ frc2::CommandPtr autos::ShootAndMoveAuto(DriveSubsystem* drive, LauncherSubsyste
              autoTimer.Start(); },
         [launcher] { launcher->AutoLaunch(AutoConstants::kShootAutoTopSpeed, AutoConstants::kShootAutoBottomSpeed); },
         [launcher](bool interrupted) {launcher->AutoLaunch(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); },
+        {launcher})
         .ToPtr(),
 
         frc2::FunctionalCommand(
@@ -44,7 +47,8 @@ frc2::CommandPtr autos::ShootAndMoveAuto(DriveSubsystem* drive, LauncherSubsyste
              autoTimer.Start(); },
         [drive] { drive->ArcadeDrive(AutoConstants::kComplexAutoSpeed, 0); },
         [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kDriveTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kDriveTime); },
+        {drive})
         .ToPtr()
     );
 }
@@ -56,7 +60,8 @@ frc2::CommandPtr autos::ShootAndMoveRightAuto(DriveSubsystem* drive, LauncherSub
              autoTimer.Start(); },
         [launcher] { launcher->AutoLaunch(AutoConstants::kShootAutoTopSpeed, AutoConstants::kShootAutoBottomSpeed); },
         [launcher](bool interrupted) {launcher->AutoLaunch(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); },
+        {launcher})
         .ToPtr(),
 
         frc2::FunctionalCommand(
@@ -64,7 +69,8 @@ frc2::CommandPtr autos::ShootAndMoveRightAuto(DriveSubsystem* drive, LauncherSub
              autoTimer.Start(); },
         [drive] { drive->ArcadeDrive(AutoConstants::kComplexAutoSpeed, AutoConstants::kComplexAutoRot); },
         [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kDriveTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kDriveTime); },
+        {drive})
         .ToPtr()
     );
 }
@@ -76,7 +82,8 @@ frc2::CommandPtr autos::ShootAndMoveLeftAuto(DriveSubsystem* drive, LauncherSubs
              autoTimer.Start(); },
         [launcher] { launcher->AutoLaunch(AutoConstants::kShootAutoTopSpeed, AutoConstants::kShootAutoBottomSpeed); },
         [launcher](bool interrupted) {launcher->AutoLaunch(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); },
+        {launcher})
         .ToPtr(),
 
         frc2::FunctionalCommand(
@@ -84,7 +91,8 @@ frc2::CommandPtr autos::ShootAndMoveLeftAuto(DriveSubsystem* drive, LauncherSubs
              autoTimer.Start(); },
         [drive] { drive->ArcadeDrive(AutoConstants::kComplexAutoSpeed, -AutoConstants::kComplexAutoRot); },
         [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kDriveTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kDriveTime); },
+        {drive})
         .ToPtr()
     );
 }
@@ -111,14 +119,14 @@ frc2::CommandPtr autos::ShootAndMoveLeftAuto(DriveSubsystem* drive, LauncherSubs
 frc2::CommandPtr autos::EncoderAuto(DriveSubsystem* drive, LauncherSubsystem* launcher){
     return frc2::cmd::Sequence(
         frc2::FunctionalCommand(
-            [drive] { drive->ResetEncoders(); },
-            [drive] { drive->ArcadeDrive(AutoConstants::kComplexAutoSpeed, 0); },
-            [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
-            [drive] {
-                return drive->GetAverageEncoderDistance()
-                >= AutoConstants::kComplexAutoDistance;
-            },
-            {drive})
+        [drive] { drive->ResetEncoders(); },
+        [drive] { drive->ArcadeDrive(AutoConstants::kComplexAutoSpeed, 0); },
+        [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
+        [drive] {
+            return drive->GetAverageEncoderDistance()
+            >= AutoConstants::kComplexAutoDistance;
+        },
+        {drive})
         .ToPtr(),
 
         frc2::FunctionalCommand(
@@ -126,18 +134,19 @@ frc2::CommandPtr autos::EncoderAuto(DriveSubsystem* drive, LauncherSubsystem* la
              autoTimer.Start(); },
         [launcher] { launcher->AutoLaunch(AutoConstants::kShootAutoTopSpeed, AutoConstants::kShootAutoBottomSpeed); },
         [launcher](bool interrupted) {launcher->AutoLaunch(0, 0); },
-        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); })
+        [] { return autoTimer.HasElapsed(AutoConstants::kShootAutoTime); },
+        {launcher})
         .ToPtr(),
 
         frc2::FunctionalCommand(
-            [drive] { drive->ResetEncoders(); },
-            [drive] { drive->ArcadeDrive(-AutoConstants::kComplexAutoSpeed, 0); },
-            [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
-            [drive] {
-                return drive->GetAverageEncoderDistance()
-                >= -AutoConstants::kComplexAutoDistance;
-            },
-            {drive})
+        [drive] { drive->ResetEncoders(); },
+        [drive] { drive->ArcadeDrive(-AutoConstants::kComplexAutoSpeed, 0); },
+        [drive](bool interrupted) { drive->ArcadeDrive(0, 0); },
+        [drive] {
+            return drive->GetAverageEncoderDistance()
+            >= -AutoConstants::kComplexAutoDistance;
+        },
+        {drive})
         .ToPtr()
     );
 }

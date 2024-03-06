@@ -19,7 +19,7 @@ RobotContainer::RobotContainer() {
 
     frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-    // ConfigureBindings();
+    ConfigureBindings();
 
     m_drive.SetDefaultCommand(frc2::cmd::Run(
     [this] {

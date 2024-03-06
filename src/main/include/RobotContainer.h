@@ -25,13 +25,14 @@ class RobotContainer {
     public:
     RobotContainer();
 
-    void ConfigureBindings();
 
     frc2::Command* GetAutonomousCommand();
 
     void UpdateData();
 
     private:
+    void ConfigureBindings();
+    
     frc::Joystick m_driverController {OIConstants::kDriverJoystickId};
     frc::Joystick m_flightController {OIConstants::kFlightJoystickId};
 
